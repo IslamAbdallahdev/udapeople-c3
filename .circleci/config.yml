@@ -99,31 +99,38 @@ jobs:
       steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
-      - run: 
+        keys:
+          - frontend-deps-{{ checksum "frontend/package-lock.json" }}
+      - run:
+          name: Install dependencies
           command: |
             cd frontend
             npm install
-            npm audit fix --audit-level=critical --force
-            npm update minimist --depth 4
-            npm update loader-utils --depth 2
+      - run:
+          name: Scan frontend packages
+          command: |
+            cd frontend
             npm audit --audit-level=critical
 
   scan-backend:
     docker:
       - image: cimg/node:13.8.0    
     steps:
-      - checkout
-      - restore_cache:
-          keys: [backend-build]
-      - run: 
-          command: |
-            cd backend
-            npm install
-            npm audit fix --force --audit-level=critical s
-            npm audit fix --force --audit-level=critical
-            npm audit --audit-level=critical    
-
+    - checkout
+    - restore_cache:
+       keys:
+         - backend-deps-{{ checksum "backend/package-lock.json" }}
+    - run:
+        name: Install dependencies
+        command: |
+          cd backend
+          npm install
+    - run:
+        name: Scan backend packages
+        command: |
+          cd backend
+          npm audit --audit-level=critical   
+  npm 
 #   deploy-infrastructure:
 #     docker:
 #       # Docker image here that supports AWS CLI
