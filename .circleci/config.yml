@@ -39,7 +39,8 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
+          keys:
+            - frontend-deps-{{ checksum "frontend/package-lock.json" }}
       - run:
           name: Build front-end
           command: |
@@ -48,7 +49,7 @@ jobs:
             npm run build
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-build
+          key: backend-deps-{{ checksum "frontend/package-lock.json" }}     
 
   build-backend:
     docker:
@@ -56,7 +57,8 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys:
+            - backend-deps-{{ checksum "backend/package-lock.json" }}
       - run:
           name: Back-end build
           command: |
@@ -65,15 +67,15 @@ jobs:
             npm run build
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-build
-
+          key: backend-deps-{{ checksum "backend/package-lock.json" }}      
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
+          keys:
+            - frontend-deps-{{ checksum "frontend/package-lock.json" }}
       - run:
           command: | 
             cd frontend
@@ -86,7 +88,8 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys:
+            - backend-deps-{{ checksum "backend/package-lock.json" }}
       - run:
           command: | 
             cd backend
@@ -115,7 +118,7 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: backend-deps-{{ checksum "frontend/package-lock.json" }}     
-          
+
   scan-backend:
     docker:
       - image: cimg/node:13.8.0
