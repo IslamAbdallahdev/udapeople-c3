@@ -99,7 +99,11 @@ jobs:
       - checkout
       - restore_cache:
           keys: [frontend-build]
-      # Your job code here
+      - run: 
+          command: |
+            cd frontend
+            npm install
+            npm audit --audit-level=critical
 
   scan-backend:
     docker:
@@ -110,7 +114,7 @@ jobs:
           keys: [backend-build]
       - run: 
           command: |
-            cd frontend
+            cd backend
             npm install
             npm audit --audit-level=critical
 
