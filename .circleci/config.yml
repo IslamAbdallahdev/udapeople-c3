@@ -95,42 +95,50 @@ jobs:
 
   scan-frontend:
     docker:
-    - image: cimg/node:13.8.0
+      - image: cimg/node:13.8.0
     steps:
-    - checkout
-    - restore_cache:
-       keys:
-         - frontend-deps-{{ checksum "frontend/package-lock.json" }}
-    - run:
-        name: Install dependencies
-        command: |
-          cd frontend
-          npm install
-    - run:
-        name: Scan frontend packages
-        command: |
-          cd frontend
-          npm audit --audit-level=critical
-
+      - checkout
+      - restore_cache:
+          keys:
+            - frontend-deps-{{ checksum "frontend/package-lock.json" }}
+      - run:
+          command: |
+            cd frontend
+            npm install
+      - run:
+          command: |
+            cd frontend
+            npm audit fix --audit-level=critical --force
+            npm update minimist --depth 4
+            npm update loader-utils --depth 2
+            npm audit --audit-level=critical
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: backend-deps-{{ checksum "frontend/package-lock.json" }}     
+          
   scan-backend:
     docker:
-      - image: cimg/node:13.8.0    
+      - image: cimg/node:13.8.0
     steps:
-    - checkout
-    - restore_cache:
-       keys:
-         - backend-deps-{{ checksum "backend/package-lock.json" }}
-    - run:
-        name: Install dependencies
-        command: |
-          cd backend
-          npm install
-    - run:
-        name: Scan backend packages
-        command: |
-          cd backend
-          npm audit --audit-level=critical   
-           
+      - checkout
+      - restore_cache:
+          keys:
+            - backend-deps-{{ checksum "backend/package-lock.json" }}
+      - run:
+          command: |
+            cd backend
+            npm install
+      - run:
+          command: |
+            cd backend
+            npm install
+            npm audit fix --force --audit-level=critical 
+            npm audit fix --force --audit-level=critical
+            npm audit --audit-level=critical    
+     
+      - save_cache:
+          paths: [backend/node_modules]
+          key: backend-deps-{{ checksum "backend/package-lock.json" }}           
 #   deploy-infrastructure:
 #     docker:
 #       # Docker image here that supports AWS CLI
