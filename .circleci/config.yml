@@ -74,6 +74,7 @@ commands:
             fi
             
 jobs:
+
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -310,12 +311,13 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: cimg/python:3.10
+      - image: cimg/python:3.7-node
+
     steps:
       - checkout
       - install_awscli
       - install_ansible
-      - install_nodejs
+     # - install_nodejs
       - add_ssh_keys:
           fingerprints: ["d6:43:1b:fe:49:a7:05:3c:13:f4:3c:66:cb:8a:db:85"]
       - attach_workspace:
