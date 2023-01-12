@@ -67,7 +67,7 @@ commands:
 
             # Logic for reverting the database state
             if (( $SUCCESS == 1 ));
-            thenW
+            then
               cd ~/project/backend
               npm install
               npm run migration:revert
@@ -340,7 +340,7 @@ jobs:
             tar -czf artifact.tar.gz dist/* package*
 
             # Copy the files to the deploy role files folder to prepare for deploying it via ansible
-            cd .circleci
+            cd ..
             cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
       
       
