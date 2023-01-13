@@ -328,8 +328,7 @@ jobs:
           name: Install dependencies
           command: |
             cd backend
-            npm install
-            # your code here
+            npm install           
       - run:
           name: packaging backend
           command: |      
