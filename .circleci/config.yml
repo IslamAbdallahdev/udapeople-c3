@@ -312,8 +312,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: cimg/base:stable 
-
+      - image: cimg/python:3.10
     steps:
       - checkout
       - install_awscli
@@ -339,9 +338,9 @@ jobs:
             cd backend
             npm run build
             # Archive the contents of the dist folder, along with backned package information
-            tar -czf artifact.tar.gz src/* package*
+            tar -czf artifact.tar.gz dist/* package*
             # Copy the files to the deploy role files folder to prepare for deploying it via ansible
-            cd ..
+            cd .circleci
             cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
       
       
@@ -355,8 +354,7 @@ jobs:
             cd .circleci/ansible
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
-            # your code here
-      # Here's where you will add some code to rollback on failure  
+
       - destroy-environment
       - revert-migrations
 
