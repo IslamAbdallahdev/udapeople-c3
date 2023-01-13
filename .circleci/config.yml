@@ -333,28 +333,43 @@ jobs:
             # your code here
       - run:
           name: packaging backend
-          command: |      
-            # Generate production build of the backend
+          command: |     
+
+
             cd backend
+            npm i
             npm run build
-            # Archive the contents of the dist folder, along with backned package information
-            tar -czf artifact.tar.gz dist/* package*
-            # Copy the files to the deploy role files folder to prepare for deploying it via ansible
             cd ..
-            cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
-      
-      
-      - run:
-          name: Deploy backend
-          command: |
-            export TYPEORM_MIGRATIONS_DIR=./migrations
-            export TYPEORM_ENTITIES=./modules/domain/*/.entity.ts
-            export TYPEORM_MIGRATIONS=./migrations/*.ts
-            
             cd .circleci/ansible
+            mkdir files
+            cd files
+            tar -C ../../../backend -czvf artifact.tar.gz .
+            cd ../
+            
+            echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
-            ansible-playbook -i inventory.txt deploy-backend.yml
-            # your code here
+            ansible-playbook -i inventory.txt deploy-backend.yml 
+            # # Generate production build of the backend
+            # cd backend
+            # npm run build
+            # # Archive the contents of the dist folder, along with backned package information
+            # tar -czf artifact.tar.gz dist/* package*
+            # # Copy the files to the deploy role files folder to prepare for deploying it via ansible
+            # cd ..
+            # cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
+      
+      
+      # - run:
+      #     name: Deploy backend
+      #     command: |
+      #       export TYPEORM_MIGRATIONS_DIR=./migrations
+      #       export TYPEORM_ENTITIES=./modules/domain/*/.entity.ts
+      #       export TYPEORM_MIGRATIONS=./migrations/*.ts
+            
+      #       cd .circleci/ansible
+      #       cat inventory.txt
+      #       ansible-playbook -i inventory.txt deploy-backend.yml
+      #       # your code here
       # Here's where you will add some code to rollback on failure  
       - destroy-environment
       - revert-migrations
