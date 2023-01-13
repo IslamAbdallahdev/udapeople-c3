@@ -28,9 +28,14 @@ commands:
       - run:
           name: Install Ansible
           command: |
-            sudo apt update --fix-missing
-            sudo apt install python3-pip
-            python3 -m pip install --user ansible
+            sudo apt update
+            sudo apt install software-properties-common -y
+            sudo add-apt-repository --yes --update ppa:ansible/ansible
+            sudo apt install ansible -y
+
+            # sudo apt update --fix-missing
+            # sudo apt install python3-pip
+            # python3 -m pip install --user ansible
 
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -346,7 +351,7 @@ jobs:
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml  
-             
+
             # # Generate production build of the backend
             # cd backend
             # npm run build
