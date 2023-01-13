@@ -5,13 +5,19 @@ version: 2.1
 commands:
 
   install_nodejs:
-    description: Install AWS CLI v2
+    description: Install Node.js 13.8.0
     steps:
       - run:
-          command: | 
-            curl -fsSL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+          name: Install Node.js 13.8.0
+          command: |
+            # Install Node.js LTS version as our base Node.js version
+            curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
             sudo apt install -y nodejs
 
+            # Use n version manager to use Node.js v13.8.0
+            sudo npm install --global n
+            sudo n 13.8.0
+            
   install_awscli:
     description: Install AWS CLI v2
     steps:
