@@ -29,7 +29,7 @@
 
 - name: "Configure pm2 to start as service"
   shell: |
-    env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu
-
+    sudo su -c "env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu"
+    pm2 save
 
 # VS Code Extension Version: 1.5.1
