@@ -2,7 +2,7 @@ version: 2.1
 # rds username = postgres
 # rds password = vqq5ALRvpfHAnQsg8gSe
 # random string = 314wasju
-# prometheus server instance ip = 100.24.22.196
+
 commands:
 
   install_nodejs:
