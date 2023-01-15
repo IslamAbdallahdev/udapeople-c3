@@ -39,6 +39,5 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
-        - key: project
-          Value: udapeople
+        
 # VS Code Extension Version: 1.5.1
