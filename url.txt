@@ -1,4 +1,4 @@
 URL01 : " https://github.com/IslamAbdallahdev/udapeople-c3 "
-URL02 : " http://udapeople-efcf8fd.s3-website-us-east-1.amazonaws.com "
-cloudfrontURL : " d19es78micxc7w.cloudfront.net	 " 
+URL02 : " http://udapeople-08187c0.s3-website-us-east-1.amazonaws.com/#/employees "
+cloudfrontURL : " http://d19es78micxc7w.cloudfront.net	 " 
 
