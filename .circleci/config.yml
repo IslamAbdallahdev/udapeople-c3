@@ -443,15 +443,13 @@ jobs:
       - run:
           name: Remove old stacks and files
           command: |
-            export OldworkflowID=$(aws cloudformation \
-                list-exports --query "Exports [?Name==\`WorkflowID\`].Value" \
-                --no-paginate --output text)
+            export OldworkflowID=$(aws cloudformation list-exports --query "Exports [?Name==\`WorkflowID\`].Value" --no-paginate --output text)
 
             export STACKS=($(aws cloudformation list-stacks \
                 --query "StackSummaries[*].StackName" \
                 --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
             echo stack names : "${STACKS[@]}"
-            echo OldworkflowID: "${OldWorkflowID}"            
+            echo "OldworkflowID: $OldWorkflowID"           
 
 
 
